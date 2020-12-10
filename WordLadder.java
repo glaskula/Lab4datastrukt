@@ -1,4 +1,5 @@
 
+import javax.crypto.spec.ChaCha20ParameterSpec;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Set;
@@ -82,7 +83,39 @@ public class WordLadder implements DirectedGraph<String> {
          * TODO: Task 2               *
          * Change below this comment  *
          ******************************/
-        return new LinkedList<>();
+        List<DirectedEdge<String>> outgoing = new LinkedList<>();
+        for(int i = 0; i < w.length(); i++){
+            for (Character c: charset){
+                StringBuilder s = new StringBuilder(w);
+                s.setCharAt(i, c);
+                if(dictionary.contains(s.toString())){
+                    outgoing.add(new DirectedEdge<>(w,s.toString())); // Fler iterationer än facit men snabbare tid (kanske fråga)
+                }
+            }
+        }
+
+
+
+/*
+        for(String x: dictionary ) {
+            int diff = 0;
+            if(x.length()==w.length()){
+                for(int i = 0 ;i<x.length();i++ ){
+                    if(x.charAt(i)!=w.charAt(i)){
+                        diff++;
+                        if(diff>1){
+                            break;
+                        }
+                    }
+                }
+                if(diff==1){
+                    outgoing.add(new DirectedEdge<>(w,x));
+                }
+            }
+        }
+
+ */
+        return outgoing;
     }
 
 
