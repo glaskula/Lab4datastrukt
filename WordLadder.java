@@ -88,33 +88,12 @@ public class WordLadder implements DirectedGraph<String> {
             for (Character c: charset){
                 StringBuilder s = new StringBuilder(w);
                 s.setCharAt(i, c);
-                if(dictionary.contains(s.toString())){
-                    outgoing.add(new DirectedEdge<>(w,s.toString())); // Fler iterationer än facit men snabbare tid (kanske fråga)
+                if(dictionary.contains(s.toString()) && !s.toString().equals(w)){
+                    outgoing.add(new DirectedEdge<>(w,s.toString()));
                 }
             }
         }
 
-
-
-/*
-        for(String x: dictionary ) {
-            int diff = 0;
-            if(x.length()==w.length()){
-                for(int i = 0 ;i<x.length();i++ ){
-                    if(x.charAt(i)!=w.charAt(i)){
-                        diff++;
-                        if(diff>1){
-                            break;
-                        }
-                    }
-                }
-                if(diff==1){
-                    outgoing.add(new DirectedEdge<>(w,x));
-                }
-            }
-        }
-
- */
         return outgoing;
     }
 

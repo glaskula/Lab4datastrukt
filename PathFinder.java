@@ -92,7 +92,7 @@ public class PathFinder<Node> {
          ******************************/
         Set<Node> visitedNodes = new HashSet<>();
         double costToNext = 0;
-        pqueue.add(new PQEntry(start,costToNext,null));
+        pqueue.add(new PQEntry(start,goal,costToNext,null));
 
         while (!pqueue.isEmpty()){
             PQEntry entry = pqueue.remove();
@@ -104,7 +104,7 @@ public class PathFinder<Node> {
                 List<DirectedEdge<Node>> neighbours = graph.outgoingEdges(entry.node);
                 for(DirectedEdge<Node> directedEdge : neighbours){
                     costToNext = entry.costToHere + directedEdge.weight();
-                    pqueue.add(new PQEntry(directedEdge.to(),costToNext,entry));
+                    pqueue.add(new PQEntry(directedEdge.to(),goal,costToNext,entry));
                 }
                 visitedNodes.add(entry.node);
             }
@@ -125,6 +125,33 @@ public class PathFinder<Node> {
          * TODO: Task 3               *
          * Change below this comment  *
          ******************************/
+
+        double guessCost = graph.guessCost(start, goal);
+        Queue<PQEntry> pqueue = new PriorityQueue<>(Comparator.comparingDouble((entry) -> entry.guessCost+entry.costToHere));
+
+        Set<Node> visitedNodes = new HashSet<>();
+        double costToNext = 0;
+        pqueue.add(new PQEntry(start,goal,costToNext,null));
+
+
+        while (!pqueue.isEmpty()){
+            PQEntry entry = pqueue.remove();
+            iterations++;
+            if(entry.node.equals(goal)){
+                return new Result(true,start,goal, entry.costToHere, extractPath(entry),iterations);
+            }
+            if(!visitedNodes.contains(entry.node)){
+                List<DirectedEdge<Node>> neighbours = graph.outgoingEdges(entry.node);
+                for(DirectedEdge<Node> directedEdge : neighbours){
+                    costToNext = entry.costToHere + directedEdge.weight();
+                    if((costToNext <= entry.guessCost+entry.costToHere)){
+                        pqueue.add(new PQEntry(directedEdge.to(), goal,costToNext,entry));
+                    }
+                }
+                visitedNodes.add(entry.node);
+            }
+        }
+
         return new Result(false, start, goal, -1, null, iterations);
     }
 
@@ -161,11 +188,13 @@ public class PathFinder<Node> {
          * TODO: Task 3               *
          * Change below this comment  *
          ******************************/
+        public final double guessCost;
 
-        PQEntry(Node n, double c, PQEntry bp) {
+        PQEntry(Node n,Node g, double c, PQEntry bp) {
             node = n;
             costToHere = c;
             backPointer = bp;
+            guessCost = graph.guessCost(n,g);
         }
     }
 
