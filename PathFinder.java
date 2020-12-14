@@ -110,6 +110,7 @@ public class PathFinder<Node> {
             }
         }
 
+
         return new Result(false, start, goal, -1, null, iterations);
     }
     
@@ -126,7 +127,7 @@ public class PathFinder<Node> {
          * Change below this comment  *
          ******************************/
 
-        double guessCost = graph.guessCost(start, goal);
+        //double guessCost = graph.guessCost(start, goal);
         Queue<PQEntry> pqueue = new PriorityQueue<>(Comparator.comparingDouble((entry) -> entry.guessCost+entry.costToHere));
 
         Set<Node> visitedNodes = new HashSet<>();

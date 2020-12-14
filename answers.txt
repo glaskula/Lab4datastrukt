@@ -4,10 +4,10 @@
 ** Lab 4: Path finder
 *******************************************************************************/
 
-Name of lab group: [...]
-Group member A:    [...]
-Group member B:    [...]
-Group member C:    [...]
+Name of lab group: 2
+Group member A:    Victor Cousin
+Group member B:    Oscar Wallin
+Group member C:    Philip Lindström Rabia
 
 
 /******************************************************************************
@@ -17,49 +17,52 @@ Group member C:    [...]
 
 > java RunPathFinder ucs AdjacencyGraph graphs/AdjacencyGraph/citygraph-SE.txt Lund Kiruna
 
-loop iterations: [...]
-minimal cost:    [...]
-shortest path:   [...]
+loop iterations: 5427
+minimal cost:    1826.0
+shortest path:   Lund -> Löddeköpinge -> Hjärnarp -> Åled -> Oskarström -> ... -> Storuman -> Sorsele -> Jokkmokk -> Gällivare -> Kiruna
 
 > java RunPathFinder ucs NPuzzle 3 "/HFG/BED/C_A/" "/ABC/DEF/GH_/"
 
-loop iterations: [...]
-minimal cost:    [...]
-shortest path:   [...]
+loop iterations: 483573
+minimal cost:    31.0
+shortest path:   /HFG/BED/C_A/ -> /HFG/BED/CA_/ -> /HFG/BE_/CAD/ -> /HFG/B_E/CAD/ -> /H_G/BFE/CAD/ -> ... -> /AC_/DBE/GHF/ -> /A_C/DBE/GHF/ -> /ABC/D_E/GHF/ -> /ABC/DE_/GHF/ -> /ABC/DEF/GH_/
 
 > java RunPathFinder astar NPuzzle 3 "/HFG/BED/C_A/" "/ABC/DEF/GH_/"
 
-loop iterations: [...]
-minimal cost:    [...]
+loop iterations: 32375
+minimal cost:    31.0
+shortest path: /HFG/BED/C_A/ -> /HFG/BED/CA_/ -> /HFG/BE_/CAD/ -> /HF_/BEG/CAD/ -> /H_F/BEG/CAD/ -> ... -> /ABC/DHE/_GF/ -> /ABC/DHE/G_F/ -> /ABC/D_E/GHF/ -> /ABC/DE_/GHF/ -> /ABC/DEF/GH_/
+
 
 > java RunPathFinder ucs NPuzzle 3 "/HGF/BED/C_A/" "/ABC/DEF/GH_/"
-
-loop iterations: [...]
+Doesn't work atm
+loop iterations: [...] ???????
 minimal cost:    [...]
 shortest path:   [...]
 
 > java RunPathFinder ucs GridGraph graphs/GridGraph/AR0011SR.map "23:161" "130:211"
 
-loop iterations: [...]
-minimal cost:    [...]
-shortest path:   [...]
+loop iterations: 159327
+minimal cost:    366.40411229460744
+shortest path:   23:161 -> 23:160 -> 23:159 -> 23:158 -> 23:157 -> ... -> 132:207 -> 131:208 -> 131:209 -> 130:210 -> 130:211
 
 > java RunPathFinder astar GridGraph graphs/GridGraph/AR0011SR.map "23:161" "130:211"
 
-loop iterations: [...]
-minimal cost:    [...]
+loop iterations: 95160
+minimal cost:    366.4041122946075
+shortest path: 23:160 -> 23:159 -> 23:158 -> 23:157 -> ... -> 132:207 -> 131:208 -> 131:209 -> 130:210 -> 130:211
 
 > java RunPathFinder ucs WordLadder graphs/WordLadder/words-saldo.txt syster broder
 
-loop iterations: [...]
-minimal cost:    [...]
-shortest path:   [...]
+loop iterations: 71182
+minimal cost:    11.0
+shortest path:   syster -> sylter -> sylten -> synten -> synden -> ... -> bauden -> bruden -> bröden -> bröder -> broder
 
 > java RunPathFinder astar WordLadder graphs/WordLadder/words-saldo.txt syster broder
 
-loop iterations: [...]
-minimal cost:    [...]
-
+loop iterations: 7055
+minimal cost:    11.0
+shortest path:   syster -> sylter -> sylten -> synten -> synden -> ... -> bauden -> bruden -> bröden -> bröder -> broder
 
 /******************************************************************************
 ** 2. For each of the three classes GridGraph, WordLadder and NPuzzle,
@@ -68,11 +71,11 @@ minimal cost:    [...]
 **    Try a number of different examples per class.
 ******************************************************************************/
 
-GridGraph:  [...]
+GridGraph:  The iterations in A* is about half of the iterations required in UCS.
 
-WordLadder: [...]
+WordLadder: The iterations in A* is one tenth of the iterations required in UCS.
 
-NPuzzle:    [...]
+NPuzzle:    The iterations in A* is about 7% of the iterations required in UCS.
 
 
 /******************************************************************************
@@ -81,7 +84,8 @@ NPuzzle:    [...]
 **    Why do you think this is the case?
 ******************************************************************************/
 
-[...]
+Astar had the most impact on NPuzzle, this is because the manhattan distance formula removes the most paths from the equation.
+This results in less loop iterations because the program has less potential paths to try.
 
 
 /******************************************************************************
@@ -89,15 +93,27 @@ NPuzzle:    [...]
 ******************************************************************************/
 
 WordLadder.outgoingEdges(String w):
-    [...]
-
-
+        List<DirectedEdge<String>> outgoing
+        for int i = 0; i < w.length(); i++  // loops through the lenght of the given word
+            for Character in charset        // loops through all the characters in the set charset
+                StringBuilder s = StringBuilder of w
+                s.setChar replace index char at index i with c
+                if dictionary contains(s.toString) and s.toString.notequals(w){
+                    outgoing add DirectedEdge<>(w,s.toString)
+            }
+        }
 WordLadder.guessCost(String w, String u):
-    [...]
+     result = 0
+        for i = 0; i less than length of w; iterate i
+            if w charAt(i) != u charAt(i)
+                increase result
+
+        return result
 
 
 GridGraph.guessCost(Coord p, Coord q):
-    [...]
+
+        return sqrt((p.x-q.x)^2+(p.y-q.y)^2)^(1/2)
 
 
 /******************************************************************************
@@ -105,7 +121,35 @@ GridGraph.guessCost(Coord p, Coord q):
 ******************************************************************************/
 
 PathFinder.searchAstar(Node start, Node goal):
-    [...]
+        iterations = 0
+
+
+        pqueue = new PriorityQueue<>(comparing costToHere+guessCost)) // using the guessCost+costToHere of the entries when we compare
+
+        Set<Node> visitedNodes = new HashSet<>()
+        costToNext = 0
+        pqueue.add(new PQEntry(start,goal,costToNext,null))
+
+
+        while (!pqueue.isEmpty()){
+            PQEntry entry = pqueue.remove()
+            increase iterations
+            if entry.node == goal:
+                extract the path and return it
+            }
+            if visitedNodes.notcontains entry.node:
+                List<DirectedEdge<Node>> neighbours = graph.outgoingEdges(entry.node)
+                for(DirectedEdge<Node> directedEdge : neighbours){
+                    costToNext = entry.costToHere + directedEdge.weight()
+                    if((costToNext <= entry.guessCost+entry.costToHere)){
+                        pqueue.add(new PQEntry(directedEdge.to(), goal,costToNext,entry))
+                    }
+                }
+                visitedNodes.add(entry.node)
+            }
+        }
+
+        return new Result(false, start, goal, -1, null, iterations)
 
 
 /******************************************************************************
@@ -113,7 +157,8 @@ PathFinder.searchAstar(Node start, Node goal):
 **    of .searchAstar() and .searchUCS()?
 ******************************************************************************/
 
-[...]
+We use guessCost in A* and sort the priority queue according to the estimated cost of the entries.
+Then we only add to the queue if the costToHere is less or equal to costToHere+guessCost of the entry.
 
 
 
@@ -123,16 +168,16 @@ PathFinder.searchAstar(Node start, Node goal):
 ** A. Approximately how many hours did you spend on the assignment?
 ******************************************************************************/
 
-[..group member..]:  [..hours..]
-[..group member..]:  [..hours..]
-[..group member..]:  [..hours..]
+Victor Cousin:          7-8 hours
+Oscar Wallin:           7-8 hours
+Philip Lindström Rabia: 7-8 hours
 
 
 /******************************************************************************
 ** B. Are there any known bugs / limitations?
 ******************************************************************************/
 
-[...]
+Not as far as we know.
 
 
 /******************************************************************************
@@ -142,14 +187,14 @@ PathFinder.searchAstar(Node start, Node goal):
 **    may have used in creating your design.
 ******************************************************************************/
 
-[...]
+We did not collaborate with any other students.
 
 
 /******************************************************************************
 ** D. Describe any serious problems you encountered.                    
 ******************************************************************************/
 
-[...]
+No serious problems encountered.
 
 
 /******************************************************************************
@@ -158,5 +203,5 @@ PathFinder.searchAstar(Node start, Node goal):
 **    from doing the assignment, and whether you enjoyed it.                                             
 ******************************************************************************/
 
-[...]
+big nice
 

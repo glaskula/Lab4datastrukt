@@ -1,5 +1,4 @@
 
-import java.lang.Math;
 
 import java.util.List;
 import java.util.LinkedList;
@@ -144,7 +143,9 @@ public class GridGraph implements DirectedGraph<GridGraph.Coord> {
          * TODO: Task 4               *
          * Change below this comment  *
          ******************************/
-        return 0;
+        double x = Math.pow((p.x-q.x),2);
+        double y = Math.pow((p.y-q.y),2);
+        return Math.pow((x+y),0.5);
     }
 
 

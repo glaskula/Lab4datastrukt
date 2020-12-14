@@ -1,9 +1,6 @@
 
 import javax.crypto.spec.ChaCha20ParameterSpec;
-import java.util.List;
-import java.util.LinkedList;
-import java.util.Set;
-import java.util.HashSet;
+import java.util.*;
 
 import java.util.stream.Collectors;
 
@@ -109,7 +106,13 @@ public class WordLadder implements DirectedGraph<String> {
          * TODO: Task 4               *
          * Change below this comment  *
          ******************************/
-        return 0;
+        double result=0;
+        for(int i = 0; i<w.length();i++){
+            if( w.charAt(i) != u.charAt(i)){
+                result++;
+            }
+        }
+        return result;
     }
 
 
