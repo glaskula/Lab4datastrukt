@@ -35,8 +35,8 @@ shortest path: /HFG/BED/C_A/ -> /HFG/BED/CA_/ -> /HFG/BE_/CAD/ -> /HF_/BEG/CAD/ 
 
 
 > java RunPathFinder ucs NPuzzle 3 "/HGF/BED/C_A/" "/ABC/DEF/GH_/"
-Doesn't work atm
-loop iterations: [...] ???????
+No path found! Intended? Maybe, maybe not?
+loop iterations: [...]
 minimal cost:    [...]
 shortest path:   [...]
 
